@@ -516,6 +516,13 @@
       <li data-sec="relatorios"><i class="fa-solid fa-chart-line"></i>Relatórios</li>
     </ul>
 
+    <div class="sidebar-section-label" style="margin-top:.3rem;color:var(--red)">🔧 Auto Center IA</div>
+    <ul class="sidebar-nav">
+      <li data-sec="cam-ia"><i class="fa-solid fa-camera-retro"></i>Câmeras Inteligentes<span class="sidebar-badge green">4</span></li>
+      <li data-sec="fluxo-ac"><i class="fa-solid fa-person-walking"></i>Fluxo de Pessoas</li>
+      <li data-sec="analytics-ac"><i class="fa-solid fa-store"></i>Analytics da Loja</li>
+    </ul>
+
     <div class="sidebar-status">
       <div class="sys-status-row"><div class="sys-dot on"></div><div class="sys-label">GPS Online</div></div>
       <div class="sys-status-row"><div class="sys-dot on"></div><div class="sys-label">Câmeras OK</div></div>
@@ -772,6 +779,157 @@
       </div>
     </section>
 
+    <!-- ══ AUTO CENTER — CÂMERAS IA ══════════════════ -->
+    <section id="s-cam-ia" class="panel-section">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title"><i class="fa-solid fa-camera-retro"></i>Câmeras Inteligentes — Fabri Auto Center</div>
+          <div class="sec-sub">Visão Computacional com IA — detecção de pessoas, veículos, LPR e estoque em tempo real</div>
+        </div>
+        <div style="display:flex;gap:.6rem">
+          <span class="badge green"><i class="fa-solid fa-brain"></i>IA Ativa</span>
+          <span class="badge blue">4 Câmeras Online</span>
+        </div>
+      </div>
+
+      <!-- AI stats bar -->
+      <div class="stats-row" style="margin-bottom:1rem">
+        <div class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-person"></i></div><div><div class="stat-val" id="ac-pax">7</div><div class="stat-lbl">Pessoas Detectadas</div></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-car"></i></div><div><div class="stat-val">3</div><div class="stat-lbl">Veículos no Pátio</div></div></div>
+        <div class="stat-card"><div class="stat-icon yellow"><i class="fa-solid fa-shield-halved"></i></div><div><div class="stat-val">100%</div><div class="stat-lbl">EPIs Conformes</div></div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="fa-solid fa-boxes-stacked"></i></div><div><div class="stat-val">2</div><div class="stat-lbl">Alertas Estoque</div></div></div>
+      </div>
+
+      <div class="grid-cam" style="grid-template-columns:repeat(2,1fr);gap:1rem">
+        <!-- Camera 1: Reception -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--green);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem">
+            <span class="live-dot" style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1s infinite;display:inline-block"></span>
+            CAM-AC-01 · RECEPÇÃO + DETECÇÃO DE PESSOAS
+            <span style="margin-left:auto;color:var(--txt2)" id="ac1-count">3 pessoas · 0 alerta</span>
+          </div>
+          <div class="cam-wrap" style="aspect-ratio:16/9;border-color:rgba(0,255,136,.15)">
+            <canvas id="cam-ac1"></canvas>
+            <div class="cam-overlay"></div>
+          </div>
+        </div>
+        <!-- Camera 2: Workshop -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--blue);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem">
+            <span class="live-dot" style="width:7px;height:7px;border-radius:50%;background:var(--blue);animation:blink 1.3s infinite;display:inline-block"></span>
+            CAM-AC-02 · OFICINA + SEGURANÇA + EPIs
+            <span style="margin-left:auto;color:var(--txt2)" id="ac2-info">2 mecânicos · EPI OK</span>
+          </div>
+          <div class="cam-wrap" style="aspect-ratio:16/9;border-color:rgba(13,143,245,.15)">
+            <canvas id="cam-ac2"></canvas>
+            <div class="cam-overlay"></div>
+          </div>
+        </div>
+        <!-- Camera 3: Entrance LPR -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--yellow);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem">
+            <span class="live-dot" style="width:7px;height:7px;border-radius:50%;background:var(--yellow);animation:blink 1.1s infinite;display:inline-block"></span>
+            CAM-AC-03 · ENTRADA + LEITURA DE PLACAS (LPR)
+            <span style="margin-left:auto;color:var(--txt2)" id="ac3-lpr">Aguardando veículo...</span>
+          </div>
+          <div class="cam-wrap" style="aspect-ratio:16/9;border-color:rgba(245,166,35,.15)">
+            <canvas id="cam-ac3"></canvas>
+            <div class="cam-overlay"></div>
+          </div>
+        </div>
+        <!-- Camera 4: Shelves -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:.68rem;color:var(--red);margin-bottom:.4rem;display:flex;align-items:center;gap:.5rem">
+            <span class="live-dot" style="width:7px;height:7px;border-radius:50%;background:var(--red);animation:blink .9s infinite;display:inline-block"></span>
+            CAM-AC-04 · ESTOQUE + IA VISUAL DE PRATELEIRAS
+            <span style="margin-left:auto;color:var(--yellow)">⚠ 2 alertas de estoque</span>
+          </div>
+          <div class="cam-wrap" style="aspect-ratio:16/9;border-color:rgba(204,0,0,.2)">
+            <canvas id="cam-ac4"></canvas>
+            <div class="cam-overlay"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LPR Log -->
+      <div class="card" style="margin-top:1rem;padding:.9rem">
+        <div class="card-title" style="margin-bottom:.8rem"><i class="fa-solid fa-id-card" style="color:var(--yellow)"></i> Log de Leituras de Placa — Hoje</div>
+        <div id="lpr-log" style="display:flex;flex-direction:column;gap:.4rem"></div>
+      </div>
+    </section>
+
+    <!-- ══ AUTO CENTER — FLUXO DE PESSOAS ════════════ -->
+    <section id="s-fluxo-ac" class="panel-section">
+      <div class="sec-hdr">
+        <div><div class="sec-title"><i class="fa-solid fa-person-walking"></i>Fluxo de Pessoas — Auto Center</div><div class="sec-sub">Análise de tráfego, tempo de espera e zonas quentes da loja</div></div>
+        <div class="badge green"><i class="fa-solid fa-circle"></i>Monitoramento Ativo</div>
+      </div>
+
+      <div class="stats-row" style="margin-bottom:1rem">
+        <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-person-walking-arrow-right"></i></div><div><div class="stat-val" id="fl-total">47</div><div class="stat-lbl">Clientes Hoje</div></div><div class="stat-delta up">▲ 12%</div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-clock"></i></div><div><div class="stat-val">22min</div><div class="stat-lbl">Tempo Médio Loja</div></div></div>
+        <div class="stat-card"><div class="stat-icon yellow"><i class="fa-solid fa-hourglass-half"></i></div><div><div class="stat-val">4min</div><div class="stat-lbl">Espera Média Balcão</div></div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="fa-solid fa-chart-simple"></i></div><div><div class="stat-val">68%</div><div class="stat-lbl">Taxa de Conversão</div></div><div class="stat-delta up">▲ 5%</div></div>
+      </div>
+
+      <div class="grid-2 mb">
+        <!-- Heatmap -->
+        <div class="card" style="padding:.9rem">
+          <div class="card-title"><i class="fa-solid fa-fire" style="color:var(--red)"></i> Mapa de Calor — Planta da Loja</div>
+          <canvas id="heatmap-canvas" style="width:100%;height:240px;border-radius:6px;display:block"></canvas>
+          <div style="display:flex;gap:1rem;margin-top:.6rem;font-size:.68rem;color:var(--txt2)">
+            <span>🔴 Alta movimentação</span>
+            <span>🟡 Média</span>
+            <span>🔵 Baixa</span>
+          </div>
+        </div>
+        <!-- Hourly chart -->
+        <div class="card" style="padding:.9rem">
+          <div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--blue)"></i> Clientes por Hora</div>
+          <div class="chart-wrap"><canvas id="chart-fluxo-hora"></canvas></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card" style="padding:.9rem">
+          <div class="card-title"><i class="fa-solid fa-chart-area" style="color:var(--green)"></i> Tempo de Permanência (min)</div>
+          <div class="chart-wrap"><canvas id="chart-dwell"></canvas></div>
+        </div>
+        <div class="card" style="padding:.9rem">
+          <div class="card-title"><i class="fa-solid fa-ranking-star" style="color:var(--yellow)"></i> Zonas Mais Visitadas</div>
+          <div id="zone-list" style="display:flex;flex-direction:column;gap:.6rem;margin-top:.4rem"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ AUTO CENTER — ANALYTICS ════════════════════ -->
+    <section id="s-analytics-ac" class="panel-section">
+      <div class="sec-hdr">
+        <div><div class="sec-title"><i class="fa-solid fa-store"></i>Analytics da Loja — Fabri Auto Center</div><div class="sec-sub">Performance completa — serviços, peças, receita e estoque</div></div>
+        <button class="btn-export"><i class="fa-solid fa-file-export"></i>Exportar Relatório</button>
+      </div>
+
+      <div class="stats-row" style="margin-bottom:1rem">
+        <div class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-money-bill-wave"></i></div><div><div class="stat-val">R$6.8k</div><div class="stat-lbl">Receita Hoje</div></div><div class="stat-delta up">▲ 8%</div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="fa-solid fa-wrench"></i></div><div><div class="stat-val">12</div><div class="stat-lbl">OS Abertas</div></div></div>
+        <div class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-boxes-stacked"></i></div><div><div class="stat-val">1.847</div><div class="stat-lbl">Itens em Estoque</div></div></div>
+        <div class="stat-card"><div class="stat-icon yellow"><i class="fa-solid fa-triangle-exclamation"></i></div><div><div class="stat-val">14</div><div class="stat-lbl">Peças em Falta</div></div><div class="stat-delta" style="background:rgba(245,166,35,.12);color:var(--yellow)">⚠ Repor</div></div>
+      </div>
+
+      <div class="report-grid mb">
+        <div class="card"><div class="card-title"><i class="fa-solid fa-chart-bar" style="color:var(--red)"></i> Faturamento por Serviço (R$)</div><div class="chart-wrap"><canvas id="chart-ac-serv"></canvas></div></div>
+        <div class="card"><div class="card-title"><i class="fa-solid fa-chart-pie" style="color:var(--blue)"></i> Tipos de Serviço Mais Comuns</div><div class="chart-wrap"><canvas id="chart-ac-tipos"></canvas></div></div>
+      </div>
+
+      <div class="report-grid mb">
+        <div class="card"><div class="card-title"><i class="fa-solid fa-chart-line" style="color:var(--green)"></i> Receita Mensal — Auto Center (R$)</div><div class="chart-wrap"><canvas id="chart-ac-receita"></canvas></div></div>
+        <div class="card">
+          <div class="card-title"><i class="fa-solid fa-triangle-exclamation" style="color:var(--yellow)"></i> Peças com Estoque Crítico (IA detectou)</div>
+          <div id="stock-alerts" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.6rem"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ══ RELATÓRIOS ═════════════════════════════════ -->
     <section id="s-relatorios" class="panel-section">
       <div class="sec-hdr">
@@ -811,11 +969,14 @@ function showSection(id) {
   document.querySelectorAll('.sidebar-nav li').forEach(l=>l.classList.remove('active'));
   document.getElementById('s-'+id)?.classList.add('active');
   document.querySelector(`[data-sec="${id}"]`)?.classList.add('active');
-  if(id==='gps')         initGPSMap();
-  if(id==='relatorios')  initCharts();
-  if(id==='funcionarios')initFuncCharts();
-  if(id==='agenda')      initAgendaChart();
-  if(id==='alertas')     initAlertChart();
+  if(id==='gps')          initGPSMap();
+  if(id==='relatorios')   initCharts();
+  if(id==='funcionarios') initFuncCharts();
+  if(id==='agenda')       initAgendaChart();
+  if(id==='alertas')      initAlertChart();
+  if(id==='cam-ia')       initACCameras();
+  if(id==='fluxo-ac')     initFluxoAC();
+  if(id==='analytics-ac') initAnalyticsAC();
 }
 document.querySelectorAll('.sidebar-nav li').forEach(li=>{
   li.addEventListener('click',()=>showSection(li.dataset.sec));
@@ -1556,6 +1717,508 @@ function initAlertChart(){
       }
     }
   });
+}
+
+// ─────────────────────────────────────────────────────
+// AUTO CENTER — IA CAMERAS
+// ─────────────────────────────────────────────────────
+
+function drawBBox(ctx, x,y,w,h, label, color, subLabel){
+  ctx.strokeStyle=color; ctx.lineWidth=1.8; ctx.strokeRect(x,y,w,h);
+  // Corner accents
+  const cs=10;
+  ctx.lineWidth=3;
+  [[x,y],[x+w,y],[x,y+h],[x+w,y+h]].forEach(([cx,cy],i)=>{
+    ctx.beginPath();
+    ctx.moveTo(cx+(i%2===0?cs:-cs),cy); ctx.lineTo(cx,cy); ctx.lineTo(cx,cy+(i<2?cs:-cs));
+    ctx.stroke();
+  });
+  ctx.lineWidth=1;
+  // Label background
+  const lw=ctx.measureText(label).width+8;
+  ctx.fillStyle=color; ctx.fillRect(x,y-16,lw,16);
+  ctx.fillStyle='#000'; ctx.font='bold 9px monospace'; ctx.fillText(label,x+3,y-4);
+  if(subLabel){
+    ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fillRect(x,y+h,ctx.measureText(subLabel).width+8,14);
+    ctx.fillStyle=color; ctx.font='8px monospace'; ctx.fillText(subLabel,x+3,y+h+10);
+  }
+}
+
+function drawPerson(ctx,x,y,w,h){
+  ctx.fillStyle='rgba(80,65,55,.55)';
+  ctx.beginPath(); ctx.arc(x+w/2,y+h*0.18,w*0.22,0,Math.PI*2); ctx.fill();
+  ctx.fillRect(x+w*0.25,y+h*0.35,w*0.5,h*0.55);
+}
+
+function drawACHUD(ctx,W,H,label,accentColor,extra){
+  ctx.fillStyle='rgba(0,0,0,.5)'; ctx.fillRect(4,4,110,14);
+  ctx.fillStyle=accentColor; ctx.font='8px monospace';
+  ctx.fillText(`IA: ${(Math.random()*3+10).toFixed(0)}ms | 30FPS`,6,14);
+  ctx.fillStyle=accentColor; ctx.font='bold 9px monospace';
+  ctx.fillText(nowStr(),4,H-4);
+  if(extra){
+    ctx.fillStyle='rgba(0,0,0,.55)'; ctx.fillRect(W-extra.length*6-8,H-16,extra.length*6+8,14);
+    ctx.fillStyle=accentColor; ctx.fillText(extra,W-extra.length*6-5,H-4);
+  }
+}
+
+function drawScanlines(ctx,W,H){
+  for(let y=0;y<H;y+=4){ctx.fillStyle='rgba(0,0,0,.05)'; ctx.fillRect(0,y,W,1);}
+}
+
+// ── CAM-AC-01: RECEPÇÃO (people tracking) ──
+function initCamAC1(){
+  const c=document.getElementById('cam-ac1'); if(!c) return;
+  const ctx=c.getContext('2d');
+  let W,H,fr=0;
+  const resize=()=>{W=c.width=c.offsetWidth||480;H=c.height=Math.round(W*9/16)||270;};
+  resize(); new ResizeObserver(resize).observe(c.parentElement);
+  // Customers: walking paths
+  const customers=[
+    {x:0,vx:0.6,id:'C001',dwell:0,color:'#00ff88',conf:97},
+    {x:W*0.55,vx:-0.4,id:'C002',dwell:180,color:'#00cc66',conf:99},
+  ];
+  function draw(){
+    fr++;
+    if(!W||!H){requestAnimationFrame(draw);return;}
+    // Background
+    ctx.fillStyle='#080d08'; ctx.fillRect(0,0,W,H);
+    // Ceiling gradient
+    const cg=ctx.createLinearGradient(0,0,0,H*0.2);
+    cg.addColorStop(0,'rgba(40,55,35,.9)'); cg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=cg; ctx.fillRect(0,0,W,H);
+    // Floor
+    ctx.fillStyle='rgba(18,22,15,.95)'; ctx.fillRect(0,H*0.78,W,H*0.22);
+    // Counter
+    ctx.fillStyle='rgba(50,42,28,.95)';
+    ctx.beginPath(); ctx.roundRect(W*0.22,H*0.58,W*0.56,H*0.15,4); ctx.fill();
+    ctx.fillStyle='rgba(255,210,80,.15)';
+    ctx.fillRect(W*0.22,H*0.58,W*0.56,2);
+    // Lights
+    [W*0.2,W*0.5,W*0.8].forEach(lx=>{
+      const lg=ctx.createRadialGradient(lx,H*0.05,0,lx,H*0.15,H*0.3);
+      lg.addColorStop(0,'rgba(180,220,150,.1)'); lg.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=lg; ctx.fillRect(0,0,W,H*0.5);
+      ctx.fillStyle='rgba(200,230,160,.7)'; ctx.fillRect(lx-18,0,36,3);
+    });
+    // Staff behind counter
+    [{x:W*0.32,y:H*0.24},{x:W*0.58,y:H*0.26}].forEach((s,i)=>{
+      const sw=W*0.075,sh=H*0.32;
+      drawPerson(ctx,s.x,s.y,sw,sh);
+      drawBBox(ctx,s.x,s.y,sw,sh,`S00${i+1} Funcionário 99%`,'#00cc88',null);
+    });
+    // Animated customers
+    customers.forEach(cu=>{
+      cu.x+=cu.vx; cu.dwell++;
+      if(cu.x<0||cu.x>W*0.85){cu.vx*=-1;}
+      const cw=W*0.072,ch=H*0.28,cy=H*0.44;
+      drawPerson(ctx,cu.x,cy,cw,ch);
+      const mins=Math.floor(cu.dwell/300),secs=Math.floor((cu.dwell%300)/5);
+      drawBBox(ctx,cu.x,cy,cw,ch,`${cu.id} Cliente ${cu.conf}%`,cu.color,`⏱ ${mins}m${String(secs).padStart(2,'0')}s espera`);
+    });
+    drawScanlines(ctx,W,H);
+    drawACHUD(ctx,W,H,'RECEPÇÃO','#00ff88',`👤 ${2+customers.length} detectados`);
+    // Queue alert box
+    if(customers[0].dwell>600){
+      ctx.fillStyle='rgba(255,80,0,.15)';ctx.fillRect(W*0.02,H*0.02,W*0.35,H*0.12);
+      ctx.strokeStyle='#ff5000';ctx.lineWidth=1;ctx.strokeRect(W*0.02,H*0.02,W*0.35,H*0.12);
+      ctx.fillStyle='#ff8040';ctx.font='bold 9px monospace';
+      ctx.fillText('⚠ ESPERA > 5min — Notificar',W*0.03,H*0.09);
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── CAM-AC-02: OFICINA (safety + EPI) ──
+function initCamAC2(){
+  const c=document.getElementById('cam-ac2'); if(!c) return;
+  const ctx=c.getContext('2d');
+  let W,H,fr=0;
+  const resize=()=>{W=c.width=c.offsetWidth||480;H=c.height=Math.round(W*9/16)||270;};
+  resize(); new ResizeObserver(resize).observe(c.parentElement);
+  let serviceTime=4932; // seconds
+  function draw(){
+    fr++; serviceTime++;
+    if(!W||!H){requestAnimationFrame(draw);return;}
+    ctx.fillStyle='#07080a'; ctx.fillRect(0,0,W,H);
+    // Floor grid
+    ctx.strokeStyle='rgba(30,35,40,.8)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=40){ctx.beginPath();ctx.moveTo(x,H*0.6);ctx.lineTo(x,H);ctx.stroke();}
+    ctx.fillStyle='rgba(12,15,18,.8)'; ctx.fillRect(0,H*0.58,W,H*0.42);
+    // Car in bay (large vehicle)
+    const carX=W*0.18,carY=H*0.25,carW=W*0.64,carH=H*0.42;
+    ctx.fillStyle='rgba(25,35,50,.9)';
+    ctx.beginPath(); ctx.roundRect(carX,carY,carW,carH,8); ctx.fill();
+    ctx.strokeStyle='rgba(60,80,110,.6)'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.roundRect(carX,carY,carW,carH,8); ctx.stroke();
+    // Wheels
+    [[carX+carW*0.15,carY+carH],[carX+carW*0.85,carY+carH]].forEach(([wx,wy])=>{
+      ctx.fillStyle='rgba(15,15,15,.9)';
+      ctx.beginPath(); ctx.ellipse(wx,wy,carW*0.08,H*0.06,0,0,Math.PI*2); ctx.fill();
+    });
+    // Windshield
+    ctx.fillStyle='rgba(40,80,120,.25)';
+    ctx.beginPath(); ctx.roundRect(carX+carW*0.2,carY+carH*0.05,carW*0.6,carH*0.3,4); ctx.fill();
+    // Vehicle bbox
+    drawBBox(ctx,carX,carY,carW,carH,'VEH-001 Veículo 98%','#0088ff','SUV | Honda CR-V | DEF-2E45');
+    // Mechanics
+    const mechs=[{x:carX-W*0.1,y:H*0.3,helmet:true},{x:carX+carW+W*0.02,y:H*0.28,helmet:true}];
+    mechs.forEach((m,i)=>{
+      const mw=W*0.07,mh=H*0.3;
+      drawPerson(ctx,m.x,m.y,mw,mh);
+      // Helmet highlight
+      if(m.helmet){
+        ctx.fillStyle='rgba(255,165,0,.4)';
+        ctx.beginPath(); ctx.arc(m.x+mw/2,m.y+mh*0.15,mw*0.28,0,Math.PI*2); ctx.fill();
+      }
+      const helmStatus=m.helmet?'✓ CAPACETE':'⚠ SEM EPI';
+      const helmColor=m.helmet?'#ffaa00':'#ff4444';
+      drawBBox(ctx,m.x,m.y,mw,mh,`MEC-00${i+1} Mecânico ${m.helmet?97:96}%`,'#ff8800',helmStatus);
+    });
+    drawScanlines(ctx,W,H);
+    // Service timer
+    const h=Math.floor(serviceTime/3600),m2=Math.floor((serviceTime%3600)/60),s2=serviceTime%60;
+    const timerStr=`${String(h).padStart(2,'0')}:${String(m2).padStart(2,'0')}:${String(s2).padStart(2,'0')}`;
+    ctx.fillStyle='rgba(0,0,0,.7)'; ctx.fillRect(W/2-65,H*0.86,130,18);
+    ctx.fillStyle='#ffaa00'; ctx.font='bold 10px monospace'; ctx.textAlign='center';
+    ctx.fillText(`⏱ OS: ${timerStr} | Diagnóstico`,W/2,H*0.86+13);
+    ctx.textAlign='left';
+    drawACHUD(ctx,W,H,'OFICINA','#0088ff','EPI: ✓ Conforme');
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── CAM-AC-03: ENTRADA LPR ──
+const LPR_PLATES=[
+  {plate:'ABC-1D23',name:'Carlos Eduardo',type:'SUV · Honda CR-V',status:'green',stxt:'✓ Cliente Cadastrado'},
+  {plate:'XYZ-9A87',name:'Novo Cliente',type:'Sedan · VW Jetta',status:'yellow',stxt:'⚡ Primeiro Acesso'},
+  {plate:'DEF-2E45',name:'Empresa RuralTech',type:'Caminhonete · Fiat Toro',status:'green',stxt:'✓ Contrato Ativo'},
+  {plate:'GHI-3F11',name:'João Ferreira',type:'Hatch · Fiat Uno',status:'green',stxt:'✓ Histórico: 8 visitas'},
+];
+let lprIdx=0, lprState='idle', lprTimer=0, lprFr=0;
+function initCamAC3(){
+  const c=document.getElementById('cam-ac3'); if(!c) return;
+  const ctx=c.getContext('2d');
+  let W,H;
+  const resize=()=>{W=c.width=c.offsetWidth||480;H=c.height=Math.round(W*9/16)||270;};
+  resize(); new ResizeObserver(resize).observe(c.parentElement);
+  let carProgress=-0.2;
+  function draw(){
+    lprFr++;
+    if(!W||!H){requestAnimationFrame(draw);return;}
+    // Outdoor scene
+    ctx.fillStyle='#0a100a'; ctx.fillRect(0,0,W,H);
+    const skyGrad=ctx.createLinearGradient(0,0,0,H*0.5);
+    skyGrad.addColorStop(0,'rgba(5,15,5,1)'); skyGrad.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=skyGrad; ctx.fillRect(0,0,W,H);
+    // Road
+    const roadGrad=ctx.createLinearGradient(0,H*0.4,0,H);
+    roadGrad.addColorStop(0,'rgba(20,25,18,.9)'); roadGrad.addColorStop(1,'rgba(10,12,8,1)');
+    ctx.fillStyle=roadGrad; ctx.fillRect(0,H*0.4,W,H*0.6);
+    // Road markings
+    const hor=H*0.42,cx=W/2;
+    ctx.strokeStyle='rgba(255,220,50,.3)'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(cx*0.5,hor); ctx.lineTo(0,H); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx*1.5,hor); ctx.lineTo(W,H); ctx.stroke();
+    const dashOff=(lprFr*3)%60; ctx.setLineDash([18,18]); ctx.lineDashOffset=-dashOff;
+    ctx.beginPath(); ctx.moveTo(cx,hor); ctx.lineTo(cx,H); ctx.stroke();
+    ctx.setLineDash([]);
+    // Gate
+    ctx.fillStyle='rgba(40,40,30,.8)'; ctx.fillRect(0,H*0.3,W*0.08,H*0.4);
+    ctx.fillRect(W*0.92,H*0.3,W*0.08,H*0.4);
+    ctx.fillStyle='rgba(80,75,50,.7)'; ctx.fillRect(W*0.08,H*0.38,W*0.84,H*0.03);
+    // Animate car
+    carProgress+=0.003;
+    if(carProgress>1.3){carProgress=-0.2;lprState='idle';lprTimer=0;lprIdx=(lprIdx+1)%LPR_PLATES.length;}
+    if(carProgress>0.3&&lprState==='idle'){lprState='reading';lprTimer=lprFr;}
+    if(carProgress>0.55&&lprState==='reading'){lprState='done';}
+    const carW=W*(0.08+carProgress*0.22),carH=H*(0.04+carProgress*0.18);
+    const carX=cx-carW/2, carY=H*(0.43+carProgress*0.28);
+    if(carProgress>0){
+      ctx.fillStyle='rgba(25,35,45,.95)';
+      ctx.beginPath(); ctx.roundRect(carX,carY,carW,carH,4); ctx.fill();
+      ctx.fillStyle='rgba(200,220,160,.2)';
+      ctx.beginPath(); ctx.roundRect(carX+carW*0.15,carY+carH*0.1,carW*0.7,carH*0.4,2); ctx.fill();
+      // Headlights
+      ctx.fillStyle='rgba(220,230,180,.8)';
+      ctx.beginPath(); ctx.arc(carX+carW*0.2,carY+carH*0.5,carW*0.05,0,Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(carX+carW*0.8,carY+carH*0.5,carW*0.05,0,Math.PI*2); ctx.fill();
+      // Vehicle bbox
+      const lpr=LPR_PLATES[lprIdx];
+      if(lprState!=='idle'){
+        const bColor=lprState==='done'?(lpr.status==='green'?'#00ff88':'#ffaa00'):'#ffdd00';
+        drawBBox(ctx,carX,carY,carW,carH,`${lpr.type} | ${lprState==='reading'?'Lendo...':lpr.plate}`,bColor,
+          lprState==='done'?`${lpr.name} — ${lpr.stxt}`:null);
+        // LPR box
+        if(lprState==='reading'||lprState==='done'){
+          const lx=W*0.02,ly=H*0.05,lbw=W*0.55,lbh=H*0.16;
+          ctx.fillStyle='rgba(0,0,0,.75)'; ctx.fillRect(lx,ly,lbw,lbh);
+          ctx.strokeStyle='#ffdd00'; ctx.lineWidth=1.5; ctx.strokeRect(lx,ly,lbw,lbh);
+          ctx.font='bold 11px monospace'; ctx.fillStyle='#ffdd00';
+          if(lprState==='reading'){
+            const dots='.'.repeat((lprFr%30<10)?1:(lprFr%30<20)?2:3);
+            ctx.fillText(`🔍 Lendo placa${dots}`,lx+8,ly+22);
+            ctx.font='9px monospace'; ctx.fillStyle='rgba(255,220,80,.6)';
+            ctx.fillText(`Confiança: ${(85+Math.random()*10).toFixed(1)}%`,lx+8,ly+40);
+          } else {
+            ctx.fillStyle='#00ff88'; ctx.fillText(`✓ ${lpr.plate}`,lx+8,ly+22);
+            ctx.font='9px monospace'; ctx.fillStyle='#fff';
+            ctx.fillText(`${lpr.name}`,lx+8,ly+36);
+            ctx.fillText(`${lpr.stxt}`,lx+8,ly+50);
+          }
+          const el=document.getElementById('ac3-lpr');
+          if(el) el.textContent=lprState==='done'?`${lpr.plate} → ${lpr.name}`:'Lendo placa...';
+        }
+      }
+    }
+    drawScanlines(ctx,W,H);
+    drawACHUD(ctx,W,H,'ENTRADA LPR','#ffdd00','LPR v3.2 | 99.2% ACC');
+    requestAnimationFrame(draw);
+  }
+  draw();
+  // Build LPR log
+  buildLPRLog();
+}
+
+function buildLPRLog(){
+  const el=document.getElementById('lpr-log'); if(!el) return;
+  const logs=[
+    {t:'09:52',plate:'ABC-1D23',name:'Carlos Eduardo',type:'SUV Honda CR-V',status:'green',stxt:'Cadastrado'},
+    {t:'09:38',plate:'XYZ-9A87',name:'Novo visitante',type:'Sedan VW Jetta',status:'yellow',stxt:'1ª visita'},
+    {t:'09:21',plate:'DEF-2E45',name:'Empresa RuralTech',type:'Caminhonete Fiat Toro',status:'green',stxt:'Contrato ativo'},
+    {t:'08:55',plate:'GHI-3F11',name:'João Ferreira',type:'Hatch Fiat Uno',status:'green',stxt:'8 visitas'},
+    {t:'08:33',plate:'JKL-4G22',name:'Maria Santos',type:'SUV Jeep Renegade',status:'green',stxt:'Cadastrado'},
+    {t:'08:11',plate:'MNO-5H44',name:'Desconhecido',type:'Picape',status:'yellow',stxt:'Verificar'},
+  ];
+  el.innerHTML=logs.map(l=>`
+    <div style="display:flex;align-items:center;gap:.8rem;padding:.5rem .7rem;background:var(--card2);border:1px solid var(--border);border-radius:6px">
+      <span style="font-family:var(--font-mono);font-size:.68rem;color:var(--txt2)">${l.t}</span>
+      <span style="font-family:var(--font-mono);font-size:.85rem;font-weight:700;color:var(--yellow);background:rgba(0,0,0,.4);padding:.1rem .4rem;border-radius:3px">${l.plate}</span>
+      <span style="font-size:.8rem;font-weight:600">${l.name}</span>
+      <span style="font-size:.75rem;color:var(--txt2)">${l.type}</span>
+      <span class="badge ${l.status}" style="margin-left:auto;font-size:.65rem">${l.stxt}</span>
+    </div>
+  `).join('');
+}
+
+// ── CAM-AC-04: ESTOQUE VISUAL ──
+function initCamAC4(){
+  const c=document.getElementById('cam-ac4'); if(!c) return;
+  const ctx=c.getContext('2d');
+  let W,H,fr=0;
+  const resize=()=>{W=c.width=c.offsetWidth||480;H=c.height=Math.round(W*9/16)||270;};
+  resize(); new ResizeObserver(resize).observe(c.parentElement);
+  const shelves=[
+    {y:0.12,label:'A1 · ÓLEO MOTOR 10W30',items:16,max:20,alert:false},
+    {y:0.28,label:'A2 · FILTRO DE ÓLEO',items:8,max:20,alert:false},
+    {y:0.44,label:'B3 · PASTILHA DE FREIO',items:3,max:20,alert:true},
+    {y:0.60,label:'B4 · FLUIDO DE FREIO',items:4,max:20,alert:true},
+    {y:0.76,label:'C1 · CORREIA DENTADA',items:12,max:16,alert:false},
+  ];
+  function draw(){
+    fr++;
+    if(!W||!H){requestAnimationFrame(draw);return;}
+    ctx.fillStyle='#080808'; ctx.fillRect(0,0,W,H);
+    // Wall
+    ctx.fillStyle='rgba(15,12,10,.95)'; ctx.fillRect(0,0,W,H);
+    shelves.forEach((sh,i)=>{
+      const sy=H*sh.y, sw=W*0.88, sx=W*0.06, rowH=H*0.12;
+      // Shelf board
+      ctx.fillStyle='rgba(40,32,22,.9)';
+      ctx.beginPath(); ctx.roundRect(sx,sy+rowH*0.8,sw,rowH*0.08,2); ctx.fill();
+      // Items on shelf
+      const itemW=(sw-10)/(sh.max+2);
+      for(let n=0;n<sh.max;n++){
+        const ix=sx+5+n*(itemW+1), iy=sy+rowH*0.1;
+        const present=n<sh.items;
+        if(present){
+          ctx.fillStyle=sh.alert?'rgba(180,80,30,.7)':'rgba(60,90,130,.8)';
+          ctx.beginPath(); ctx.roundRect(ix,iy,itemW,rowH*0.65,2); ctx.fill();
+          ctx.fillStyle=sh.alert?'rgba(220,120,60,.3)':'rgba(100,140,200,.2)';
+          ctx.fillRect(ix+1,iy+1,itemW-2,rowH*0.15);
+        } else {
+          ctx.fillStyle='rgba(20,15,10,.8)';
+          ctx.beginPath(); ctx.roundRect(ix,iy,itemW,rowH*0.65,2); ctx.fill();
+          ctx.strokeStyle='rgba(60,40,20,.4)'; ctx.lineWidth=.5; ctx.strokeRect(ix,iy,itemW,rowH*0.65);
+        }
+      }
+      // AI detection overlay
+      const bColor=sh.alert?'#ff4444':'#00aaff';
+      ctx.strokeStyle=bColor; ctx.lineWidth=sh.alert?2:1;
+      ctx.strokeRect(sx-2,sy,sw+4,rowH*0.95);
+      if(sh.alert){
+        // Pulsing alert
+        const pulse=Math.abs(Math.sin(fr*0.05));
+        ctx.fillStyle=`rgba(255,50,0,${pulse*0.08})`;
+        ctx.fillRect(sx-2,sy,sw+4,rowH*0.95);
+      }
+      // Label
+      const pct=Math.round((sh.items/sh.max)*100);
+      const alertTxt=sh.alert?'⚠ REPOR URGENTE':'';
+      const labelFull=`${sh.label} | ${sh.items}/${sh.max} (${pct}%) ${alertTxt}`;
+      ctx.fillStyle=sh.alert?'rgba(255,50,0,.8)':'rgba(0,0,0,.65)';
+      ctx.fillRect(sx,sy-13,ctx.measureText(labelFull).width+8,13);
+      ctx.fillStyle=bColor; ctx.font=`${sh.alert?'bold ':''}8px monospace`;
+      ctx.fillText(labelFull,sx+3,sy-3);
+    });
+    drawScanlines(ctx,W,H);
+    drawACHUD(ctx,W,H,'ESTOQUE IA','#ff6644','2 alertas · IA monitorando');
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── START ALL AC CAMERAS ──
+function initACCameras(){
+  initCamAC1(); initCamAC2(); initCamAC3(); initCamAC4();
+}
+
+// ─────────────────────────────────────────────────────
+// AUTO CENTER — FLUXO DE PESSOAS
+// ─────────────────────────────────────────────────────
+let fluxoChartsInited=false;
+function initFluxoAC(){
+  if(fluxoChartsInited) return; fluxoChartsInited=true;
+  // Heatmap
+  const hc=document.getElementById('heatmap-canvas');
+  if(hc){
+    hc.width=hc.offsetWidth||500; hc.height=240;
+    const hctx=hc.getContext('2d');
+    const W=hc.width,H=hc.height;
+    // Floor plan background
+    hctx.fillStyle='#0f0f0f'; hctx.fillRect(0,0,W,H);
+    hctx.strokeStyle='rgba(80,60,40,.6)'; hctx.lineWidth=1;
+    // Walls
+    hctx.strokeRect(4,4,W-8,H-8);
+    // Rooms
+    hctx.strokeRect(4,4,W*0.35,H*0.5); // Reception
+    hctx.strokeRect(4,H*0.5,W*0.35,H*0.5); // Workshop entrance
+    hctx.strokeRect(W*0.35,4,W*0.65,H*0.65); // Main sales floor
+    hctx.strokeRect(W*0.35,H*0.65,W*0.65,H*0.35); // Workshop
+    // Labels
+    hctx.fillStyle='rgba(200,180,140,.4)'; hctx.font='9px Inter,sans-serif';
+    hctx.fillText('Recepção',8,20); hctx.fillText('Entrada',8,H*0.5+18);
+    hctx.fillText('Balcão de Peças',W*0.37,20); hctx.fillText('Oficina',W*0.37,H*0.67+18);
+    // Heat zones (radial gradients)
+    const zones=[
+      {x:W*0.17,y:H*0.25,r:60,color:'255,50,0',intensity:.7},    // Reception (hot)
+      {x:W*0.6,y:H*0.3,r:80,color:'255,120,0',intensity:.8},     // Balcao (hottest)
+      {x:W*0.75,y:H*0.45,r:55,color:'255,200,0',intensity:.5},   // Mid floor
+      {x:W*0.85,y:H*0.2,r:40,color:'100,150,255',intensity:.35}, // Corner (cool)
+      {x:W*0.17,y:H*0.75,r:45,color:'255,80,0',intensity:.45},   // Workshop entrance
+      {x:W*0.6,y:H*0.82,r:70,color:'80,120,255',intensity:.25},  // Workshop (cold)
+    ];
+    zones.forEach(z=>{
+      const grad=hctx.createRadialGradient(z.x,z.y,0,z.x,z.y,z.r);
+      grad.addColorStop(0,`rgba(${z.color},${z.intensity})`);
+      grad.addColorStop(1,'rgba(0,0,0,0)');
+      hctx.fillStyle=grad; hctx.fillRect(0,0,W,H);
+    });
+    // Person dots (current locations)
+    const persons=[{x:W*0.15,y:H*0.3},{x:W*0.18,y:H*0.22},{x:W*0.55,y:H*0.28},{x:W*0.62,y:H*0.35},{x:W*0.7,y:H*0.4},{x:W*0.8,y:H*0.2}];
+    persons.forEach(p=>{
+      hctx.fillStyle='rgba(255,255,255,.9)';
+      hctx.beginPath(); hctx.arc(p.x,p.y,3,0,Math.PI*2); hctx.fill();
+      hctx.strokeStyle='rgba(0,255,136,.8)'; hctx.lineWidth=1.5;
+      hctx.beginPath(); hctx.arc(p.x,p.y,7,0,Math.PI*2); hctx.stroke();
+    });
+  }
+  // Hourly chart
+  new Chart(document.getElementById('chart-fluxo-hora'),{
+    type:'bar',
+    data:{
+      labels:['07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h'],
+      datasets:[{label:'Clientes',data:[2,5,8,12,10,7,4,9,11,8,6,3],
+        backgroundColor:'rgba(13,143,245,.7)',borderRadius:4,}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:'rgba(255,255,255,.4)'},grid:{display:false}},
+              y:{ticks:{color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.05)'}}}}
+  });
+  // Dwell time chart
+  new Chart(document.getElementById('chart-dwell'),{
+    type:'line',
+    data:{
+      labels:['07h','08h','09h','10h','11h','12h','13h','14h','15h','16h','17h','18h'],
+      datasets:[{label:'Tempo médio (min)',data:[12,18,25,30,28,22,15,24,27,20,18,14],
+        borderColor:'#00cc66',backgroundColor:'rgba(0,204,102,.08)',tension:.4,fill:true,pointBackgroundColor:'#00cc66'}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:'rgba(255,255,255,.4)'},grid:{display:false}},
+              y:{ticks:{color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.05)'}}}}
+  });
+  // Zone list
+  const zones=[
+    {name:'Balcão de Peças',visits:187,pct:92,color:'red'},
+    {name:'Recepção',visits:142,pct:74,color:'yellow'},
+    {name:'Prateleiras A',visits:98,pct:51,color:'blue'},
+    {name:'Prateleiras B',visits:76,pct:40,color:'blue'},
+    {name:'Entrada',visits:203,pct:100,color:'green'},
+    {name:'Oficina',visits:54,pct:28,color:'blue'},
+  ];
+  const zl=document.getElementById('zone-list');
+  if(zl) zl.innerHTML=zones.map(z=>`
+    <div>
+      <div style="display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:.25rem">
+        <span>${z.name}</span><span style="color:var(--txt2)">${z.visits} visitas</span>
+      </div>
+      <div style="background:rgba(255,255,255,.06);border-radius:3px;height:5px">
+        <div style="width:${z.pct}%;height:100%;border-radius:3px;background:var(--${z.color})"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─────────────────────────────────────────────────────
+// AUTO CENTER — ANALYTICS
+// ─────────────────────────────────────────────────────
+let acAnalyticsInited=false;
+function initAnalyticsAC(){
+  if(acAnalyticsInited) return; acAnalyticsInited=true;
+  const cOpts={responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'rgba(255,255,255,.5)',font:{size:11}}}},
+    scales:{x:{ticks:{color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.05)'}},
+            y:{ticks:{color:'rgba(255,255,255,.4)'},grid:{color:'rgba(255,255,255,.05)'}}}};
+  new Chart(document.getElementById('chart-ac-serv'),{type:'bar',
+    data:{labels:['Troca Óleo','Freios','Suspen.','Motor','Elétrico','A/C','Pneus','Outros'],
+      datasets:[{label:'R$',data:[1850,1200,980,2100,760,640,420,850],
+        backgroundColor:'rgba(204,0,0,.7)',borderRadius:4}]},options:cOpts});
+  new Chart(document.getElementById('chart-ac-tipos'),{type:'doughnut',
+    data:{labels:['Manutenção Prev.','Corretiva','Revisão','Elétrica','Outros'],
+      datasets:[{data:[35,25,20,12,8],backgroundColor:['#CC0000','#0d8ff5','#00cc66','#f5a623','#7c7c7c'],borderWidth:0}]},
+    options:{...cOpts,scales:{}}});
+  new Chart(document.getElementById('chart-ac-receita'),{type:'line',
+    data:{labels:['Maio','Jun','Jul','Ago','Set','Out','Nov'],
+      datasets:[{label:'Receita (R$)',data:[38000,42000,39000,51000,56000,61000,68000],
+        borderColor:'#00cc66',backgroundColor:'rgba(0,204,102,.08)',tension:.4,fill:true,pointBackgroundColor:'#00cc66'}]},
+    options:cOpts});
+  // Stock alerts
+  const stocks=[
+    {part:'Pastilha de Freio Dianteira',code:'PFD-220',qty:3,min:10,color:'red'},
+    {part:'Fluido de Freio DOT4',code:'FFB-DOT4',qty:4,min:15,color:'red'},
+    {part:'Filtro de Combustível',code:'FC-1034',qty:6,min:12,color:'yellow'},
+    {part:'Correia Dentada K2',code:'CD-K200',qty:5,min:10,color:'yellow'},
+    {part:'Óleo Motor 5W30 Sintético',code:'OM-5W30',qty:8,min:20,color:'yellow'},
+  ];
+  const el=document.getElementById('stock-alerts');
+  if(el) el.innerHTML=stocks.map(s=>`
+    <div style="display:flex;align-items:center;gap:.7rem;padding:.5rem .8rem;background:var(--card2);border:1px solid ${s.color==='red'?'rgba(204,0,0,.3)':'rgba(245,166,35,.2)'};border-radius:6px">
+      <span style="font-size:.9rem">${s.color==='red'?'🚨':'⚠️'}</span>
+      <div style="flex:1">
+        <div style="font-size:.8rem;font-weight:600">${s.part}</div>
+        <div style="font-size:.68rem;color:var(--txt2)">Cód: ${s.code}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-h);font-size:.85rem;font-weight:700;color:var(--${s.color})">${s.qty} un.</div>
+        <div style="font-size:.62rem;color:var(--txt2)">mín: ${s.min}</div>
+      </div>
+      <span class="badge ${s.color}" style="font-size:.62rem">${s.color==='red'?'CRÍTICO':'BAIXO'}</span>
+    </div>
+  `).join('');
 }
 
 // ─────────────────────────────────────────────────────
